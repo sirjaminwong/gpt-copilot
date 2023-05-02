@@ -16,7 +16,7 @@ const handler: PlasmoMessaging.MessageHandler = async (req, res) => {
   }).then(res => res.json()).catch(err => console.log(err))
 
   res.send({
-    message
+    ...message
   })
 }
 

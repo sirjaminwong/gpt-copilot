@@ -21,10 +21,8 @@ export const useTextSelection = () => {
     }
 
     document.addEventListener('mouseup', selectionFinish)
-    document.addEventListener('keyup', selectionFinish)
 
     return () => {
-      document.removeEventListener('mouseup', selectionFinish)
       document.removeEventListener('mouseup', selectionFinish)
     }
   }, [])

@@ -1,20 +1,21 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 
 import styleText from 'data-text:./popover.module.less'
 import * as style from './popover.module.less'
 
-import { useRequest } from 'ahooks'
+import { useKeyPress, useRequest } from 'ahooks'
 import { sendToBackground } from '@plasmohq/messaging'
 
 import useTextSelection from '~hooks/useTextSelection'
+import type { GptResult } from '~types/gpt'
 
 function PopoverIndex () {
   const [mode, setMode] = useState<'icon' | 'panel'>('icon')
-
+  const [isOpen, setIsOpen] = useState(false)
   const [textSelection, clearSelection] = useTextSelection()
 
   const { data, loading, run } = useRequest(
-    async (text: string) => {
+    async (text: string): Promise<GptResult> => {
       const result = await sendToBackground({
         name: 'translate',
         body: {
@@ -26,18 +27,31 @@ function PopoverIndex () {
     { manual: true }
   )
 
+  useEffect(() => {
+    if (textSelection) {
+      setIsOpen(true)
+      setMode('icon')
+    }
+  }, [textSelection])
+
+  const handleClosePanel = useCallback(() => {
+    setIsOpen(false)
+    clearSelection()
+    setMode('icon')
+  }, [clearSelection])
+
+  useKeyPress('esc', () => {
+    handleClosePanel()
+  })
+
+
   const handleClickIcon = useCallback(() => {
     if (!textSelection) return
     setMode('panel')
     run(textSelection.text)
   }, [run, textSelection])
 
-  const handleClosePanel = useCallback(() => {
-    clearSelection()
-    setMode('icon')
-  }, [clearSelection])
-
-  if (!textSelection) {
+  if (!isOpen || !textSelection) {
     return null
   }
 
@@ -46,7 +60,7 @@ function PopoverIndex () {
     left: `${textSelection.rect.left}px`
   }
 
-  const value = data?.message?.choices[0].message?.content || 'No translation found'
+  const value = data?.choices[0]?.message?.content || 'No translation found'
 
   const renderPanel = () => {
     if (loading) {
@@ -71,7 +85,6 @@ function PopoverIndex () {
       style={{
         ...position
       }}
-      onClick={handleClosePanel}
     >
       {renderPanel()}
     </div>
