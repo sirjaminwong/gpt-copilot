@@ -1,7 +1,8 @@
 import { useState, useEffect, useCallback } from 'react'
+import { getSentenceOfSelectedWord } from '~utils/getContext'
 
 export const useTextSelection = () => {
-  const [selection, setSelection] = useState<{ text: string, rect: DOMRect } | null>(null)
+  const [selection, setSelection] = useState<{ text: string, sentence: string, rect: DOMRect } | null>(null)
 
   const clear = useCallback(() => {
     setSelection(null)
@@ -12,10 +13,11 @@ export const useTextSelection = () => {
       const selection = window.getSelection()
       if (selection) {
         const selectedText = selection.toString()
+        const sentence = getSentenceOfSelectedWord(selection) ?? ''
         if (selectedText.length > 0) {
           const range = selection.getRangeAt(0)
           const rect = range.getBoundingClientRect()
-          setSelection({ text: selectedText, rect })
+          setSelection({ text: selectedText, sentence, rect })
         }
       }
     }
