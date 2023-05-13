@@ -1,6 +1,6 @@
 import { useStorage } from '@plasmohq/storage/hook'
 
-function IndexPopup () {
+function IndexOptions () {
   const [apiKey, setApiKey] = useStorage<string| undefined>('api-key', undefined)
 
   return (
@@ -13,5 +13,4 @@ function IndexPopup () {
       </div>
   )
 }
-
-export default IndexPopup
+export default IndexOptions

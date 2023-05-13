@@ -10,11 +10,18 @@
     "package": "plasmo package"
   },
   "dependencies": {
+    "@plasmohq/messaging": "^0.2.0",
+    "@plasmohq/storage": "^1.6.0",
+    "ahooks": "^3.7.6",
+    "antd": "^5.4.6",
+    "axios": "^1.4.0",
+    "hook": "link:@plasmohq/storage/hook",
     "plasmo": "0.69.1",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
   "devDependencies": {
+    "@plasmohq/prettier-plugin-sort-imports": "3.6.4",
     "@types/chrome": "0.0.227",
     "@types/node": "18.15.11",
     "@types/react": "18.0.32",
@@ -29,12 +36,22 @@
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "prettier": "2.8.7",
-    "typescript": "5.0.3",
-    "@plasmohq/prettier-plugin-sort-imports": "3.6.4"
+    "typescript": "5.0.3"
   },
   "manifest": {
     "host_permissions": [
-      "https://*/*"
+      "https://*/*",
+      "https://api.openai.com/*"
+    ],
+    "permissions": [
+      "activeTab",
+      "scripting",
+      "commands",
+      "bookmarks",
+      "storage",
+      "tabs",
+      "webNavigation",
+      "webRequest"
     ]
   }
 }

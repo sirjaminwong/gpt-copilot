@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import styleText from 'data-text:./popover.module.less'
 import * as style from './popover.module.less'
@@ -7,7 +7,7 @@ import { useKeyPress, useRequest } from 'ahooks'
 import { sendToBackground } from '@plasmohq/messaging'
 
 import useTextSelection from '~hooks/useTextSelection'
-import type { GptResult } from '~types/gpt'
+import type { TranslateResult } from '~types/translate'
 
 function PopoverIndex () {
   const [mode, setMode] = useState<'icon' | 'panel'>('icon')
@@ -15,17 +15,20 @@ function PopoverIndex () {
   const [textSelection, clearSelection] = useTextSelection()
 
   const { data, loading, run } = useRequest(
-    async (text: string): Promise<GptResult> => {
+    async ({ text, sentence }: { text: string, sentence: string }): Promise<TranslateResult> => {
       const result = await sendToBackground({
         name: 'translate',
         body: {
-          content: text
+          text,
+          sentence
         }
       })
       return result
     },
     { manual: true }
   )
+
+  console.log(data)
 
   useEffect(() => {
     if (textSelection) {
@@ -44,11 +47,10 @@ function PopoverIndex () {
     handleClosePanel()
   })
 
-
   const handleClickIcon = useCallback(() => {
     if (!textSelection) return
     setMode('panel')
-    run(textSelection.text)
+    run({ text: textSelection.text, sentence: textSelection.sentence })
   }, [run, textSelection])
 
   if (!isOpen || !textSelection) {
@@ -60,34 +62,58 @@ function PopoverIndex () {
     left: `${textSelection.rect.left}px`
   }
 
-  const value = data?.choices[0]?.message?.content || 'No translation found'
-
   const renderPanel = () => {
     if (loading) {
       return 'loading...'
     }
-    return value
+    if (data) {
+      return (
+      <>
+        <div>{textSelection.text}</div>
+        <div>释义: {data.explain}</div>
+        <div>{data.part_of_speech.map(i => <div key={i.type}>{i.type}: {i.explain}</div>)}</div>
+        <p className={style.tense}>
+          <div>复数形式: {data.third_person_singular}</div>
+          <div>第三人称单数: {data.third_person_singular}</div>
+          <div>过去式: {data.past_tense}</div>
+          <div>过去分词: {data.past_participle}</div>
+          <div>现在分词: {data.present_participle}</div>
+        </p>
+        <p>
+          {data.example_sentences.map(i => (<div key={i.english}>
+            <div>{i.english} </div>
+            <div>{i.chinese}</div>
+          </div>))}
+        </p>
+        <p>
+        <div>专业术语</div>
+        {data.computer_science_definition && <div>计算机:{data.computer_science_definition}</div>}
+        {data.finance_definition && <div>金融:{data.computer_science_definition}</div>}
+        </p>
+
+      </>)
+    }
   }
 
   return mode === 'icon'
     ? (
-    <div
-      className={style.pin}
-      onClick={handleClickIcon}
-      style={{
-        ...position
-      }}
-    />
+      <div
+        className={style.pin}
+        onClick={handleClickIcon}
+        style={{
+          ...position
+        }}
+      />
       )
     : (
-    <div
-      className={style.panel}
-      style={{
-        ...position
-      }}
-    >
-      {renderPanel()}
-    </div>
+      <div
+        className={style.panel}
+        style={{
+          ...position
+        }}
+      >
+        {renderPanel()}
+      </div>
       )
 }
 
