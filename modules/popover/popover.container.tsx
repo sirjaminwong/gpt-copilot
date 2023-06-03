@@ -8,11 +8,15 @@ import { sendToBackground } from '@plasmohq/messaging'
 
 import useTextSelection from '~hooks/useTextSelection'
 import type { TranslateResult } from '~types/translate'
+import { PhoneOutlined } from '@ant-design/icons'
 
 function PopoverContainer () {
   const [mode, setMode] = useState<'icon' | 'panel'>('icon')
   const [isOpen, setIsOpen] = useState(false)
   const [textSelection, clearSelection] = useTextSelection()
+
+  const defaultApiKey = process.env.PLASMO_PUBLIC_SHIP_NAME
+  console.log('PLASMO_PUBLIC_SHIP_NAME', defaultApiKey)
 
   const { data, loading, run } = useRequest(
     async ({ text, sentence }: { text: string, sentence: string }): Promise<TranslateResult> => {
@@ -53,6 +57,15 @@ function PopoverContainer () {
     run({ text: textSelection.text, sentence: textSelection.sentence })
   }, [run, textSelection])
 
+  const handleSpeech = useCallback(
+    (text: string, lang = 'en-US') => {
+      const utterance = new SpeechSynthesisUtterance(text)
+      utterance.lang = lang
+      speechSynthesis.speak(utterance)
+    },
+    []
+  )
+
   if (!isOpen || !textSelection) {
     return null
   }
@@ -64,13 +77,15 @@ function PopoverContainer () {
 
   const renderPanel = () => {
     if (loading) {
-      return 'loading....'
+      return 'loading......'
     }
     if (data) {
       return (
       <>
         <div>{textSelection.text}</div>
         <div>释义: {data.explain}</div>
+        <div>uk: {data.phonetic.uk} <PhoneOutlined onClick={() => handleSpeech(textSelection.text, 'en-GB')} /></div>
+        <div>us: {data.phonetic.us} <PhoneOutlined onClick={() => handleSpeech(textSelection.text)} /></div>
         <div>{data.part_of_speech.map(i => <div key={i.type}>{i.type}: {i.explain}</div>)}</div>
         <p className={style.tense}>
           <div>复数形式: {data.third_person_singular}</div>
@@ -80,13 +95,14 @@ function PopoverContainer () {
           <div>现在分词: {data.present_participle}</div>
         </p>
         <p>
-          {data.example_sentences.map(i => (<div key={i.english}>
-            <div>{i.english} </div>
+          {data.example_sentences.map(i => (
+          <div key={i.english}>
+            <div><PhoneOutlined onClick={() => handleSpeech(i.english)} /> {i.english}</div>
             <div>{i.chinese}</div>
           </div>))}
         </p>
         <p>
-        <div>专业术语</div>
+        <div>专业术语222</div>
         {data.computer_science_definition && <div>计算机:{data.computer_science_definition}</div>}
         {data.finance_definition && <div>金融:{data.computer_science_definition}</div>}
         </p>

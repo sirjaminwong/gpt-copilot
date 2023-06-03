@@ -1,4 +1,10 @@
 export interface TranslateResult {
+  phonetic: {
+    // 英式发音
+    uk: string;
+    // 美式发音
+    us: string;
+  }
   // 中文的详细释义
   explain: string;
   // 该单词的所有词性

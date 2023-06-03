@@ -1,6 +1,7 @@
 import type { PlasmoMessaging } from '@plasmohq/messaging'
 
 import { Storage } from '@plasmohq/storage'
+import { mockTranslateResult } from './mock'
 
 const storage = new Storage()
 
@@ -17,6 +18,12 @@ const getTranslatePrompt3 = ({ text, sentence }: { text: string, sentence: strin
   interface TranslateResult {
     // 中文的详细释义
     explain: string;
+    phonetic: {
+      // 英式发音
+      uk: string;
+      // 美式发音
+      us: string;
+    }
     // 该单词的所有词性
     part_of_speech: {
       // 词性 verb noun adj adv 等
@@ -48,21 +55,21 @@ const getTranslatePrompt3 = ({ text, sentence }: { text: string, sentence: strin
 }
 
 const handler: PlasmoMessaging.MessageHandler = async (req, res) => {
-  console.log(req.body)
+  const apiKey = await storage.get('api-key') || process.env.PLASMO_PUBLIC_DEFAULT_API_KEY
 
-  const apiKey = await storage.get('api-key')
-
-  const message = await fetch('https://api.openai.com/v1/chat/completions', {
+  const message = mockTranslateResult ?? await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
     credentials: 'include',
     headers: {
-      Authorization: 'Bearer ' + apiKey,
+      accept: 'text/event-stream',
+      Authorization: 'Bearer ' + (apiKey),
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
       model: 'gpt-3.5-turbo',
       messages: [{ role: 'user', content: getTranslatePrompt3({ text: req.body.text, sentence: req.body.sentence }) }],
       temperature: 0.7
+      // stream: true
     })
   }).then(res => res.json()).catch(err => console.log(err))
 
