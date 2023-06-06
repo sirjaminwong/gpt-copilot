@@ -1,4 +1,4 @@
-import PopoverContainer, { getStyle } from '~/modules/popover/popover.container'
+import PopoverContainer, { appendStyle } from '~/modules/popover/popover.container'
 
 import createCache from '@emotion/cache'
 import { CacheProvider } from '@emotion/react'
@@ -20,6 +20,8 @@ export default PopoverIndex
 const config = {
   matches: ['http://*/*', 'https://*/*', '<all_urls>']
 }
+
+const getStyle = appendStyle(styleElement)
 
 export {
   getStyle,
