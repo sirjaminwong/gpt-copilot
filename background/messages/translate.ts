@@ -57,7 +57,7 @@ const getTranslatePrompt3 = ({ text, sentence }: { text: string, sentence: strin
 const handler: PlasmoMessaging.MessageHandler = async (req, res) => {
   const apiKey = await storage.get('api-key') || process.env.PLASMO_PUBLIC_DEFAULT_API_KEY
 
-  const message = mockTranslateResult ?? await fetch('https://api.openai.com/v1/chat/completions', {
+  const message = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
     credentials: 'include',
     headers: {

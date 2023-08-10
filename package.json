@@ -10,7 +10,7 @@
     "package": "plasmo package"
   },
   "dependencies": {
-    "@ant-design/icons": "^5.1.4",
+    "@ant-design/icons": "5.0.0",
     "@emotion/cache": "^11.11.0",
     "@emotion/react": "^11.11.0",
     "@emotion/styled": "^11.11.0",
@@ -20,6 +20,7 @@
     "antd": "^5.5.2",
     "axios": "^1.4.0",
     "hook": "link:@plasmohq/storage/hook",
+    "openai": "^3.3.0",
     "plasmo": "0.74.2",
     "react": "18.2.0",
     "react-dom": "18.2.0"

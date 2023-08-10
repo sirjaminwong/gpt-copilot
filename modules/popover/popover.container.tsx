@@ -18,8 +18,15 @@ import type { TranslateResult } from '~types/translate'
 
 import * as style from './popover.module.less'
 
+const StyledHeaderLeft = styled.div`
+  display: flex;
+  align-items: center;
+`
+
 const StyledHeader = styled.div`
   display: flex;
+  box-sizing: border-box;
+  padding: 0 10px;
   height: 30px;
   width: 100%;
   background-color: green;
@@ -39,7 +46,7 @@ const StyledContent = styled.div`
 function PopoverContainer () {
   const [mode, setMode] = useState<'icon' | 'panel'>('icon')
 
-  const [inputValue, setInputValue] = useState<string| undefined>()
+  const [inputValue, setInputValue] = useState<string | undefined>()
 
   const [favorites, setFavorites] = useStorage<string[]>('favorites', [])
 
@@ -52,7 +59,7 @@ function PopoverContainer () {
       sentence
     }: {
       text: string
-      sentence: string
+      sentence?: string
     }): Promise<TranslateResult> => {
       const result = await sendToBackground({
         name: 'translate',
@@ -93,6 +100,11 @@ function PopoverContainer () {
     run({ text: textSelection.text, sentence: textSelection.sentence })
   }, [run, textSelection])
 
+  const handleSearch = useCallback(() => {
+    if (!inputValue) return
+    run({ text: inputValue })
+  }, [inputValue, run])
+
   const handleSpeech = useCallback((text: string, lang = 'en-US') => {
     const utterance = new SpeechSynthesisUtterance(text)
     utterance.lang = lang
@@ -125,19 +137,22 @@ function PopoverContainer () {
       return (
         <>
           <StyledHeader>
-            <div>
+            <StyledHeaderLeft>
               <div>
-                <LeftOutlined rev={undefined} />
-                <RightOutlined rev={undefined} />
+                <LeftOutlined />
+                <RightOutlined />
               </div>
-              <Input.Search value={inputValue} onChange={(e) => setInputValue(e.target.value)} />
-            </div>
+              <Input.Search
+                value={inputValue}
+                onSearch={handleSearch}
+                onChange={(e) => setInputValue(e.target.value)}
+              />
+            </StyledHeaderLeft>
             <div>
               <StyledStarOutlined
                 isFavorite={
                   textSelection?.text && favorites.includes(textSelection.text)
                 }
-                rev={''}
                 onClick={handleToggleFavorites}
               />
             </div>
@@ -146,18 +161,14 @@ function PopoverContainer () {
             <div>{textSelection.text}</div>
             <div>释义: {data.explain}</div>
             <div>
-              uk: {data.phonetic.uk}{' '}
+              uk: {data.phonetic.uk}
               <PhoneOutlined
-                rev={''}
                 onClick={() => handleSpeech(textSelection.text, 'en-GB')}
               />
             </div>
             <div>
-              us: {data.phonetic.us}{' '}
-              <PhoneOutlined
-                rev={''}
-                onClick={() => handleSpeech(textSelection.text)}
-              />
+              us: {data.phonetic.us}
+              <PhoneOutlined onClick={() => handleSpeech(textSelection.text)} />
             </div>
             <div>
               {data.part_of_speech.map((i) => (
@@ -177,10 +188,7 @@ function PopoverContainer () {
               {data.example_sentences.map((i) => (
                 <div key={i.english}>
                   <div>
-                    <PhoneOutlined
-                      onClick={() => handleSpeech(i.english)}
-                      rev={undefined}
-                    />{' '}
+                    <PhoneOutlined onClick={() => handleSpeech(i.english)} />
                     {i.english}
                   </div>
                   <div>{i.chinese}</div>
