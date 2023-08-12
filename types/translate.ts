@@ -34,3 +34,49 @@ export interface TranslateResult {
   // 金融领域定义
   finance_definition: string;
 }
+
+export interface WordBaseInfo {
+  phonetic: {
+    // 英式发音
+    uk: string;
+    // 美式发音
+    us: string;
+  }
+  // 不同词性下的反应
+  trs: {
+    // 词性 verb noun adj adv 等
+    partOfSpeech: string;
+    // 单词在这个词性下对应的中文含义
+    explain: string;
+  }[];
+  forms:
+    {
+      name: string;
+      value: string;
+    }[],
+    exampleSentences: {
+      sentence: string;
+      translation: string;
+      source: string;
+    }[],
+
+}
+
+export interface YoudaoV2 {
+  exam_type: string[];
+  source: {
+    name: string;
+    url: string;
+  };
+  word: {
+    usphone: string;
+    ukphone: string;
+    ukspeech: string;
+    trs: {tr: [{l: {i: string}}]}[];
+    wfs: {wf: {
+      name: string;
+      value: string;
+    }}[];
+    usspeech: string;
+  }[];
+}

@@ -14,7 +14,7 @@ import { sendToBackground } from '@plasmohq/messaging'
 import { useStorage } from '@plasmohq/storage/hook'
 
 import useTextSelection from '~hooks/useTextSelection'
-import type { TranslateResult } from '~types/translate'
+import type { WordBaseInfo } from '~types/translate'
 
 import * as style from './popover.module.less'
 
@@ -60,9 +60,9 @@ function PopoverContainer () {
     }: {
       text: string
       sentence?: string
-    }): Promise<TranslateResult> => {
+    }): Promise<WordBaseInfo> => {
       const result = await sendToBackground({
-        name: 'translate',
+        name: 'youdao',
         body: {
           text,
           sentence
@@ -159,7 +159,6 @@ function PopoverContainer () {
           </StyledHeader>
           <StyledContent>
             <div>{textSelection.text}</div>
-            <div>释义: {data.explain}</div>
             <div>
               uk: {data.phonetic.uk}
               <PhoneOutlined
@@ -171,38 +170,29 @@ function PopoverContainer () {
               <PhoneOutlined onClick={() => handleSpeech(textSelection.text)} />
             </div>
             <div>
-              {data.part_of_speech.map((i) => (
-                <div key={i.type}>
-                  {i.type}: {i.explain}
+              {data.trs.map((i) => (
+                <div key={i.partOfSpeech}>
+                  {i.partOfSpeech}: {i.explain}
                 </div>
               ))}
             </div>
             <p className={style.tense}>
-              <div>复数形式: {data.third_person_singular}</div>
-              <div>第三人称单数: {data.third_person_singular}</div>
-              <div>过去式: {data.past_tense}</div>
-              <div>过去分词: {data.past_participle}</div>
-              <div>现在分词: {data.present_participle}</div>
-            </p>
-            <p>
-              {data.example_sentences.map((i) => (
-                <div key={i.english}>
-                  <div>
-                    <PhoneOutlined onClick={() => handleSpeech(i.english)} />
-                    {i.english}
-                  </div>
-                  <div>{i.chinese}</div>
+              {data.forms.map((i) => (
+                <div key={i.name}>
+                  {i.name}: {i.value}
                 </div>
               ))}
             </p>
             <p>
-              <div>专业术语</div>
-              {data.computer_science_definition && (
-                <div>计算机:{data.computer_science_definition}</div>
-              )}
-              {data.finance_definition && (
-                <div>金融:{data.computer_science_definition}</div>
-              )}
+              {data.exampleSentences.map((i) => (
+                <div key={i.sentence}>
+                  <div>
+                    <PhoneOutlined onClick={() => handleSpeech(i.sentence)} />
+                    {i.sentence}
+                  </div>
+                  <div>{i.translation}</div>
+                </div>
+              ))}
             </p>
           </StyledContent>
         </>
