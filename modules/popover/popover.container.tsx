@@ -18,6 +18,11 @@ import type { WordBaseInfo } from '~types/translate'
 
 import * as style from './popover.module.less'
 
+const phoneticConfig = [
+  { type: 'uk', lang: 'en-GB' },
+  { type: 'us', lang: 'en-US' }
+] as const
+
 const StyledHeaderLeft = styled.div`
   display: flex;
   align-items: center;
@@ -41,6 +46,8 @@ const StyledStarOutlined = styled(StarOutlined)<{ isFavorite }>`
 
 const StyledContent = styled.div`
   padding: 10px;
+  max-height: 300px;
+  overflow: auto;
 `
 
 function PopoverContainer () {
@@ -158,16 +165,14 @@ function PopoverContainer () {
             </div>
           </StyledHeader>
           <StyledContent>
-            <div>{textSelection.text}</div>
-            <div>
-              uk: {data.phonetic.uk}
-              <PhoneOutlined
-                onClick={() => handleSpeech(textSelection.text, 'en-GB')}
-              />
-            </div>
-            <div>
-              us: {data.phonetic.us}
-              <PhoneOutlined onClick={() => handleSpeech(textSelection.text)} />
+            <div style={{ display: 'flex', gap: '20px' }}>
+              {phoneticConfig.map((i) => (
+                <div key={i.type}>
+                  {phoneticConfig.length > 1 && i.type}/
+                  {data.phonetic[i.type]}/
+                  <PhoneOutlined onClick={() => handleSpeech(textSelection.text, i.lang)} />
+                </div>
+              ))}
             </div>
             <div>
               {data.trs.map((i) => (
