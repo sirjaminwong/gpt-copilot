@@ -2,6 +2,8 @@ import { Storage } from '@plasmohq/storage'
 
 const storage = new Storage()
 
+const highlightedWordsClassName = 'gpt-copilot-highlighted-word'
+
 const getTextNode = (node: Node) => {
   if (node.nodeName === 'SCRIPT' || node.nodeName === 'STYLE' || node.nodeName === 'TEXTAREA') {
     return []
@@ -24,6 +26,25 @@ const splitSentenceByKeywords = (sentence, keywords) => {
   return parts
 }
 
+function addHighlightStyle () {
+  const style = document.createElement('style')
+  style.textContent = `
+    :root {
+      --gpt-copilot-highlight: 255, 167, 196;
+    }
+    .${highlightedWordsClassName} {
+      text-decoration: dashed underline rgba(var(--gpt-copilot-highlight));
+      text-underline-position: under;
+      text-decoration-thickness: 1px;
+      cursor: pointer;
+    }
+    .${highlightedWordsClassName}:hover {
+      background-color: rgba(var(--gpt-copilot-highlight), 0.2);
+    }
+  `
+  document.head.appendChild(style)
+}
+
 function highlight (node: Node, keywords: string[]) {
   if (keywords.length === 0) return
   const allTextNodes = getTextNode(node)
@@ -36,7 +57,7 @@ function highlight (node: Node, keywords: string[]) {
     const highlightedWords = words.map((word) => {
       if (keywords.includes(word)) {
         const span = document.createElement('span')
-        span.style.backgroundColor = 'yellow'
+        span.className = highlightedWordsClassName
         span.textContent = word
         return span
       } else {
@@ -55,6 +76,7 @@ function highlight (node: Node, keywords: string[]) {
 }
 
 window.addEventListener('load', async () => {
+  addHighlightStyle()
   const keywords: string[] = await storage.get('favorites') || []
   console.log(keywords)
   highlight(document.body, keywords)
