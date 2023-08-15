@@ -1,8 +1,7 @@
-
-import styled from '@emotion/styled'
-import React from 'react'
-import logo from 'data-base64:~assets/icon.png'
-import { keyframes } from '@emotion/react'
+import { keyframes } from "@emotion/react"
+import styled from "@emotion/styled"
+import logo from "data-base64:~assets/icon.png"
+import React from "react"
 
 const drawIn = keyframes`
   0% {
@@ -14,9 +13,9 @@ const drawIn = keyframes`
 `
 
 export const StyledDrawer = styled.div<{
-  placement: 'left' | 'right';
-  $top: React.CSSProperties['top'];
-  $zIndex?: number;
+  placement: "left" | "right"
+  $top: React.CSSProperties["top"]
+  $zIndex?: number
 }>`
   display: flex;
   width: 408px;
@@ -28,7 +27,7 @@ export const StyledDrawer = styled.div<{
   animation: ${drawIn} 0.3s ease-in-out;
 `
 
-export const StyledContainer = styled.div<{ placement: 'left' | 'right' }>`
+export const StyledContainer = styled.div<{ placement: "left" | "right" }>`
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -36,13 +35,13 @@ export const StyledContainer = styled.div<{ placement: 'left' | 'right' }>`
   overflow: hidden;
   border-radius: 8px 0 0 8px;
   border-radius: ${(props) =>
-    props.placement === 'right' ? ' 8px 0 0 8px' : '0 8px 8px 0'};
+    props.placement === "right" ? " 8px 0 0 8px" : "0 8px 8px 0"};
   position: relative;
   background: #ffffff;
   box-shadow: ${({ placement }) =>
-    placement === 'right'
-      ? '-2px 2px 4px 0 rgba(215,214,214,0.28)'
-      : '2px 2px 4px 0 rgba(215,214,214,0.28)'};
+    placement === "right"
+      ? "-2px 2px 4px 0 rgba(215,214,214,0.28)"
+      : "2px 2px 4px 0 rgba(215,214,214,0.28)"};
   background-repeat: no-repeat;
 `
 
@@ -64,7 +63,7 @@ export const StyledHeader = styled.div<{ shadowed: boolean }>`
   align-items: center;
   justify-content: space-between;
   box-shadow: ${({ shadowed }) =>
-    shadowed ? '0px 4px 2px -2px rgba(195,200,205,0.43)' : undefined};
+    shadowed ? "0px 4px 2px -2px rgba(195,200,205,0.43)" : undefined};
   flex: 0 0 auto;
   height: 75px;
 `
@@ -101,15 +100,15 @@ export const HistoryButton = styled.div`
   }
 `
 
-export const CloseButton = styled.div<{ placement: 'left' | 'right' }>`
+export const CloseButton = styled.div<{ placement: "left" | "right" }>`
   position: absolute;
   display: flex;
   align-items: center;
   justify-content: center;
-  transform: scaleX(${(props) => (props.placement === 'right' ? 1 : -1)});
+  transform: scaleX(${(props) => (props.placement === "right" ? 1 : -1)});
   z-index: 20;
   top: 80px;
-  ${(props) => (props.placement === 'right' ? 'left' : 'right')}: -30px;
+  ${(props) => (props.placement === "right" ? "left" : "right")}: -30px;
   font-size: 20px;
   width: 30px;
   height: 30px;

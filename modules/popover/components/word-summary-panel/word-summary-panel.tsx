@@ -1,80 +1,53 @@
+import { PhoneOutlined } from "@ant-design/icons"
+import { useRequest } from "ahooks"
+import React, { useCallback, useRef } from "react"
+
+import { sendToBackground } from "@plasmohq/messaging"
+import { useStorage } from "@plasmohq/storage/hook"
+
+import type { WordBaseInfo } from "~types/translate"
+
+import * as style from "../../popover.module.less"
+import { useClickAwayV2 } from "../../use-click-away"
 import {
-  PhoneOutlined,
-  StarOutlined
-} from '@ant-design/icons'
-import styled from '@emotion/styled'
-import { useRequest } from 'ahooks'
-import React, { useCallback, useRef } from 'react'
-
-import { sendToBackground } from '@plasmohq/messaging'
-import { useStorage } from '@plasmohq/storage/hook'
-
-import type { WordBaseInfo } from '~types/translate'
-
-import * as style from './popover.module.less'
-import { useClickAwayV2 } from './use-click-away'
+  StyledContent,
+  StyledHeader,
+  StyledHeaderLeft,
+  StyledStarOutlined
+} from "./styled"
 
 const phoneticConfig = [
-  { type: 'uk', lang: 'en-GB' },
-  { type: 'us', lang: 'en-US' }
+  { type: "uk", lang: "en-GB" },
+  { type: "us", lang: "en-US" }
 ] as const
-
-const StyledHeaderLeft = styled.div`
-  display: flex;
-  align-items: center;
-`
-
-const StyledHeader = styled.div`
-  display: flex;
-  box-sizing: border-box;
-  padding: 0 10px;
-  height: 30px;
-  width: 100%;
-  background-color: green;
-  align-items: center;
-  justify-content: space-between;
-`
-
-const StyledStarOutlined = styled(StarOutlined)<{ isFavorite }>`
-  color: ${(props) => (props.isFavorite ? 'red' : 'white')};
-  font-size: 16px;
-`
-
-const StyledContent = styled.div`
-  padding: 10px;
-  max-height: 300px;
-  overflow: auto;
-`
 
 interface WordSummaryProps {
   word: string
   onClose: () => void
   position: {
-    top: React.CSSProperties['top']
-    left: React.CSSProperties['top']
+    top: React.CSSProperties["top"]
+    left: React.CSSProperties["top"]
   }
 }
 
 export const WordSummary = ({ word, position, onClose }: WordSummaryProps) => {
   const containerRef = useRef<HTMLDivElement>(null)
 
-  const [favorites, setFavorites] = useStorage<string[]>('favorites', [])
+  const [favorites, setFavorites] = useStorage<string[]>("favorites", [])
 
-  const { data, loading } = useRequest(
-    async (): Promise<WordBaseInfo> => {
-      const result = await sendToBackground({
-        name: 'youdao',
-        body: {
-          text: word
-        }
-      })
-      return result
-    }
-  )
+  const { data, loading } = useRequest(async (): Promise<WordBaseInfo> => {
+    const result = await sendToBackground({
+      name: "youdao",
+      body: {
+        text: word
+      }
+    })
+    return result
+  })
 
   useClickAwayV2(containerRef, onClose)
 
-  const handleSpeech = useCallback((text: string, lang = 'en-US') => {
+  const handleSpeech = useCallback((text: string, lang = "en-US") => {
     const utterance = new SpeechSynthesisUtterance(text)
     utterance.lang = lang
     speechSynthesis.speak(utterance)
@@ -89,11 +62,11 @@ export const WordSummary = ({ word, position, onClose }: WordSummaryProps) => {
   }, [favorites, setFavorites, word])
 
   const renderContent = () => {
-    if (loading) return 'loading...'
+    if (loading) return "loading..."
     if (!data) return null
     return (
       <StyledContent>
-        <div style={{ display: 'flex', gap: '20px' }}>
+        <div style={{ display: "flex", gap: "20px" }}>
           {phoneticConfig.map((i) => (
             <div key={i.type}>
               {phoneticConfig.length > 1 && i.type}/{data.phonetic[i.type]}/
@@ -139,9 +112,7 @@ export const WordSummary = ({ word, position, onClose }: WordSummaryProps) => {
       }}>
       <StyledHeader>
         <StyledHeaderLeft>
-          <div>
-            {word}
-          </div>
+          <div>{word}</div>
         </StyledHeaderLeft>
         <div>
           <StyledStarOutlined

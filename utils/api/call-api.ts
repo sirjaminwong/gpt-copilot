@@ -1,13 +1,13 @@
-import axios from 'axios'
-
-import type { AxiosRequestConfig, Method } from 'axios'
+import axios from "axios"
+import type { AxiosRequestConfig, Method } from "axios"
 
 const httpClient = axios.create({
-  baseURL: 'https://api.openai.com/v1/chat/',
+  baseURL: "https://api.openai.com/v1/chat/",
   timeout: 20000,
   withCredentials: true,
   headers: {
-    Authorization: 'Bearer ' + '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'
+    Authorization:
+      "Bearer " + "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"
   }
 })
 
@@ -30,15 +30,15 @@ httpClient.interceptors.response.use(
 )
 
 export interface ResponseBody<T> {
-  code: number;
-  message: string;
-  data: T;
+  code: number
+  message: string
+  data: T
 }
 
 export const callInfoApi = async <T>(
   url: string,
   axiosConfig?: AxiosRequestConfig & {
-    method?: Method;
+    method?: Method
   }
 ) => {
   const response = await httpClient<ResponseBody<T>>({

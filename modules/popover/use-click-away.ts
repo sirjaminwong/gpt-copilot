@@ -1,22 +1,28 @@
-import React, { useEffect } from 'react'
+import React, { useEffect } from "react"
 
-type ClickAwayHandler = (event: MouseEvent) => void;
+type ClickAwayHandler = (event: MouseEvent) => void
 
-export const useClickAway = (ref: React.RefObject<HTMLElement>, onClickAway: ClickAwayHandler) => {
+export const useClickAway = (
+  ref: React.RefObject<HTMLElement>,
+  onClickAway: ClickAwayHandler
+) => {
   useEffect(() => {
     const handleClickAway = (event: MouseEvent) => {
       if (ref.current && !ref.current.contains(event.target as Node)) {
         onClickAway(event)
       }
     }
-    document.addEventListener('click', handleClickAway)
+    document.addEventListener("click", handleClickAway)
     return () => {
-      document.removeEventListener('click', handleClickAway)
+      document.removeEventListener("click", handleClickAway)
     }
   }, [ref, onClickAway])
 }
 
-export const useClickAwayV2 = (ref: React.RefObject<HTMLElement>, onClickAway: ClickAwayHandler) => {
+export const useClickAwayV2 = (
+  ref: React.RefObject<HTMLElement>,
+  onClickAway: ClickAwayHandler
+) => {
   useEffect(() => {
     const handleClickAway = (event: MouseEvent) => {
       if (ref.current) {
@@ -33,9 +39,9 @@ export const useClickAwayV2 = (ref: React.RefObject<HTMLElement>, onClickAway: C
         }
       }
     }
-    document.addEventListener('click', handleClickAway)
+    document.addEventListener("click", handleClickAway)
     return () => {
-      document.removeEventListener('click', handleClickAway)
+      document.removeEventListener("click", handleClickAway)
     }
   }, [ref, onClickAway])
 }

@@ -1,15 +1,15 @@
-import { useKeyPress } from 'ahooks'
-import styleText from 'data-text:./popover.module.less'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useKeyPress } from "ahooks"
+import styleText from "data-text:./popover.module.less"
+import { useCallback, useEffect, useRef, useState } from "react"
 
-import useTextSelection from '~hooks/useTextSelection'
+import useTextSelection from "~hooks/useTextSelection"
 
-import * as style from './popover.module.less'
-import { WordSummary } from './word-summary-panel'
-import { useClickAwayV2 } from './use-click-away'
+import { WordSummary } from "./components/word-summary-panel/word-summary-panel"
+import * as style from "./popover.module.less"
+import { useClickAwayV2 } from "./use-click-away"
 
-function PopoverContainer () {
-  const [mode, setMode] = useState<'icon' | 'panel'>('icon')
+function PopoverContainer() {
+  const [mode, setMode] = useState<"icon" | "panel">("icon")
 
   const pinRef = useRef<HTMLDivElement>(null)
 
@@ -19,17 +19,17 @@ function PopoverContainer () {
   useEffect(() => {
     if (textSelection) {
       setIsOpen(true)
-      setMode('icon')
+      setMode("icon")
     }
   }, [textSelection])
 
   const handleClosePanel = useCallback(() => {
     setIsOpen(false)
     clearSelection()
-    setMode('icon')
+    setMode("icon")
   }, [clearSelection])
 
-  useKeyPress('esc', () => {
+  useKeyPress("esc", () => {
     handleClosePanel()
   })
 
@@ -38,7 +38,7 @@ function PopoverContainer () {
   const handleClickIcon = useCallback(() => {
     console.log(pinRef.current)
     if (!textSelection) return
-    setMode('panel')
+    setMode("panel")
   }, [textSelection])
 
   if (!isOpen || !textSelection) {
@@ -50,28 +50,28 @@ function PopoverContainer () {
     left: `${textSelection.rect.left}px`
   }
 
-  return mode === 'icon'
-    ? (
+  return mode === "icon" ? (
     <div
       ref={pinRef}
       className={style.pin}
       onClick={handleClickIcon}
       style={{
         ...position
-      }}/>
-      )
-    : (
+      }}
+    />
+  ) : (
     <WordSummary
       onClose={handleClosePanel}
       word={textSelection.text}
-      position={position}></WordSummary>
-      )
+      position={position}
+    />
+  )
 }
 
 export default PopoverContainer
 
 export const config = {
-  matches: ['http://*/*', 'https://*/*', '<all_urls>']
+  matches: ["http://*/*", "https://*/*", "<all_urls>"]
 }
 
 export const appendStyle = (style: HTMLStyleElement) => () => {

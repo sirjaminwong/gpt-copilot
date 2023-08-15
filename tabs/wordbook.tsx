@@ -1,12 +1,13 @@
-import { createFromIconfontCN } from '@ant-design/icons'
-import { useStorage } from '@plasmohq/storage/hook'
+import { createFromIconfontCN } from "@ant-design/icons"
+
+import { useStorage } from "@plasmohq/storage/hook"
 
 const IconFont = createFromIconfontCN({
-  scriptUrl: 'https://at.alicdn.com/t/font_8d5l8fzk5b87iudi.js'
+  scriptUrl: "https://at.alicdn.com/t/font_8d5l8fzk5b87iudi.js"
 })
 
-function TabManage () {
-  const [favorites] = useStorage<string[]>('favorites', [])
+function TabManage() {
+  const [favorites] = useStorage<string[]>("favorites", [])
 
   return (
     <div>

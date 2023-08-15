@@ -1,11 +1,15 @@
-import { Storage } from '@plasmohq/storage'
+import { Storage } from "@plasmohq/storage"
 
 const storage = new Storage()
 
-const highlightedWordsClassName = 'gpt-copilot-highlighted-word'
+const highlightedWordsClassName = "gpt-copilot-highlighted-word"
 
 const getTextNode = (node: Node) => {
-  if (node.nodeName === 'SCRIPT' || node.nodeName === 'STYLE' || node.nodeName === 'TEXTAREA') {
+  if (
+    node.nodeName === "SCRIPT" ||
+    node.nodeName === "STYLE" ||
+    node.nodeName === "TEXTAREA"
+  ) {
     return []
   }
   if (node.nodeType === 3) {
@@ -19,15 +23,18 @@ const getTextNode = (node: Node) => {
 }
 const splitSentenceByKeywords = (sentence, keywords) => {
   // 为保证英文按单词分词，需要在关键词两边加上\b
-  const keywordsRegex = new RegExp(`(${keywords.map(i => `\\b${i}\\b`).join('|')})`, 'gi')
+  const keywordsRegex = new RegExp(
+    `(${keywords.map((i) => `\\b${i}\\b`).join("|")})`,
+    "gi"
+  )
 
   const parts = sentence.split(keywordsRegex)
 
   return parts
 }
 
-function addHighlightStyle () {
-  const style = document.createElement('style')
+function addHighlightStyle() {
+  const style = document.createElement("style")
   style.textContent = `
     :root {
       --gpt-copilot-highlight: 255, 167, 196;
@@ -45,7 +52,7 @@ function addHighlightStyle () {
   document.head.appendChild(style)
 }
 
-function highlight (node: Node, keywords: string[]) {
+function highlight(node: Node, keywords: string[]) {
   if (keywords.length === 0) return
   const allTextNodes = getTextNode(node)
 
@@ -56,7 +63,7 @@ function highlight (node: Node, keywords: string[]) {
 
     const highlightedWords = words.map((word) => {
       if (keywords.includes(word)) {
-        const span = document.createElement('span')
+        const span = document.createElement("span")
         span.className = highlightedWordsClassName
         span.textContent = word
         return span
@@ -75,17 +82,15 @@ function highlight (node: Node, keywords: string[]) {
   })
 }
 
-window.addEventListener('load', async () => {
+window.addEventListener("load", async () => {
   addHighlightStyle()
-  const keywords: string[] = await storage.get('favorites') || []
+  const keywords: string[] = (await storage.get("favorites")) || []
   console.log(keywords)
   highlight(document.body, keywords)
 })
 
 const config = {
-  matches: ['http://*/*', 'https://*/*', '<all_urls>']
+  matches: ["http://*/*", "https://*/*", "<all_urls>"]
 }
 
-export {
-  config
-}
+export { config }

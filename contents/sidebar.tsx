@@ -1,21 +1,22 @@
-import createCache from '@emotion/cache'
-import { CacheProvider } from '@emotion/react'
-import Side from '~modules/sidebar/sidebar.container'
+import createCache from "@emotion/cache"
+import { CacheProvider } from "@emotion/react"
 
-const styleElement = document.createElement('style')
+import Side from "~modules/sidebar/sidebar.container"
+
+const styleElement = document.createElement("style")
 
 const styleCache = createCache({
-  key: 'gpt-copilot-sidebar-emotion',
+  key: "gpt-copilot-sidebar-emotion",
   prepend: true,
   container: styleElement
 })
 
 export const getStyle = () => styleElement
 
-function PlasmoOverlay () {
+function PlasmoOverlay() {
   return (
     <CacheProvider value={styleCache}>
-      <Side/>
+      <Side />
     </CacheProvider>
   )
 }
@@ -23,5 +24,5 @@ function PlasmoOverlay () {
 export default PlasmoOverlay
 
 export const config = {
-  matches: ['http://*/*', 'https://*/*', '<all_urls>']
+  matches: ["http://*/*", "https://*/*", "<all_urls>"]
 }
