@@ -1,0 +1,30 @@
+# Ignore build and output directories
+build/
+.plasmo/
+
+# Ignore editor directories and files
+.vscode/
+.github/
+
+node_modules/
+assets/
+
+# Ignore all HTML files
+**/*.html
+
+# Ignore all CSS files
+**/*.css
+
+# Ignore files starting with underscore
+_*.*
+
+# Ignore TypeScript declaration files
+*.d.ts
+
+# Ignore logs and temporary files
+*.log
+*.tmp
+
+# Ignore specific test files
+**/*.test.js
+**/*.spec.js
