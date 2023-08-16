@@ -1,11 +1,18 @@
+import styled from "@emotion/styled"
+import { useDebounceEffect } from "ahooks"
+import logo from "data-base64:~assets/logo.png"
+import React, {
+  type MouseEventHandler,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState
+} from "react"
 
-import styled from '@emotion/styled'
-import { useStorage } from '@plasmohq/storage/hook'
-import { useDebounceEffect } from 'ahooks'
-import React, { useEffect, useMemo, useRef, useState, type MouseEventHandler, useCallback } from 'react'
-import { getLocalStorageKey } from '~utils/local-storage'
+import { useStorage } from "@plasmohq/storage/hook"
 
-import logo from 'data-base64:~assets/logo.png'
+import { getLocalStorageKey } from "~utils/local-storage"
 
 const zIndex = 1000
 
@@ -13,11 +20,13 @@ interface Props {
   onClick: (e?: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
 }
 
-function Pin (props: Props) {
-  const [storagePositionY, setStoragePositionY] = useStorage<number| undefined>(
-    getLocalStorageKey('positionY')
+function Pin(props: Props) {
+  const [storagePositionY, setStoragePositionY] = useStorage<
+    number | undefined
+  >(getLocalStorageKey("positionY"))
+  const [positionY, setPositionY] = useState<number | undefined>(
+    () => storagePositionY
   )
-  const [positionY, setPositionY] = useState<number| undefined>(() => storagePositionY)
 
   useDebounceEffect(
     () => {
@@ -53,46 +62,43 @@ function Pin (props: Props) {
       setIsDragging(false)
     }
 
-    window.addEventListener('mousemove', handleMouseMove)
-    window.addEventListener('mouseup', handleMouseUp)
+    window.addEventListener("mousemove", handleMouseMove)
+    window.addEventListener("mouseup", handleMouseUp)
 
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove)
-      window.removeEventListener('mouseup', handleMouseUp)
+      window.removeEventListener("mousemove", handleMouseMove)
+      window.removeEventListener("mouseup", handleMouseUp)
     }
   }, [isDragging, setPositionY])
 
   const siderButtonStyle: React.CSSProperties = useMemo(() => {
     return {
-      top: positionY ?? '50%',
-      cursor: isDragging ? 'move' : 'pointer',
+      top: positionY ?? "50%",
+      cursor: isDragging ? "move" : "pointer",
       zIndex
     }
   }, [isDragging, positionY])
 
-  const handleClick = useCallback(
-    () => {
-      if (isDragging) return
+  const handleClick = useCallback(() => {
+    if (isDragging) return
 
-      props.onClick()
-    },
-    [isDragging, props]
-  )
+    props.onClick()
+  }, [isDragging, props])
 
   return (
-      <StyledPin
-        onClick={handleClick}
-        onMouseDown={handleMouseDown}
-        ref={siderButtonRef}
-        style={siderButtonStyle}
-        placement={'right'}
-      />
+    <StyledPin
+      onClick={handleClick}
+      onMouseDown={handleMouseDown}
+      ref={siderButtonRef}
+      style={siderButtonStyle}
+      placement={"right"}
+    />
   )
 }
 
 export default Pin
 
-const StyledPin = styled.div<{ placement: 'left' | 'right' }>`
+const StyledPin = styled.div<{ placement: "left" | "right" }>`
   position: fixed;
   height: 46px;
   transform: translateY(-50%);

@@ -7,10 +7,12 @@
   "scripts": {
     "dev": "plasmo dev --verbose",
     "build": "plasmo build",
-    "package": "plasmo package"
+    "package": "plasmo package",
+    "lint:fix": "eslint . --ext '.js,.cjs,.jsx,.ts,.tsx' --fix",
+    "lint": "eslint . '.js,.cjs,.jsx,.ts,.tsx"
   },
   "dependencies": {
-    "@ant-design/icons": "^5.1.4",
+    "@ant-design/icons": "5.0.0",
     "@emotion/cache": "^11.11.0",
     "@emotion/react": "^11.11.0",
     "@emotion/styled": "^11.11.0",
@@ -20,6 +22,8 @@
     "antd": "^5.5.2",
     "axios": "^1.4.0",
     "hook": "link:@plasmohq/storage/hook",
+    "md5": "^2.3.0",
+    "openai": "^3.3.0",
     "plasmo": "0.74.2",
     "react": "18.2.0",
     "react-dom": "18.2.0"
@@ -33,9 +37,11 @@
     "@typescript-eslint/eslint-plugin": "^5.59.8",
     "@typescript-eslint/parser": "^5.59.8",
     "eslint": "^8.42.0",
+    "eslint-config-prettier": "^9.0.0",
     "eslint-config-standard": "^17.1.0",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-n": "^15.7.0",
+    "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
