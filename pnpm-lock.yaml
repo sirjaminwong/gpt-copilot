@@ -35,6 +35,9 @@ dependencies:
   hook:
     specifier: link:@plasmohq/storage/hook
     version: link:@plasmohq/storage/hook
+  md5:
+    specifier: ^2.3.0
+    version: 2.3.0
   openai:
     specifier: ^3.3.0
     version: 3.3.0
@@ -4133,6 +4136,14 @@ packages:
       '@jridgewell/sourcemap-codec': 1.4.15
     dev: false
 
+  /md5@2.3.0:
+    resolution: {integrity: sha512-T1GITYmFaKuO91vxyoQMFETst+O71VUPEU3ze5GNzDm0OWdP8v1ziTaAEPUr/3kLsY3Sftgz242A1SetQiDL7g==}
+    dependencies:
+      charenc: r2.cnpmjs.org/charenc@0.0.2
+      crypt: r2.cnpmjs.org/crypt@0.0.2
+      is-buffer: r2.cnpmjs.org/is-buffer@1.1.6
+    dev: false
+
   /micromatch@4.0.5:
     resolution: {integrity: sha512-DMy+ERcEW2q8Z2Po+WNXuw3c5YaUSFjAO5GsJqfEl7UjvtIuFKO6ZrKvcItdy98dwFI2N1tg3zNIdKaQT+aNdA==}
     engines: {node: '>=8.6'}
@@ -5880,6 +5891,12 @@ packages:
     version: 0.7.0
     dev: false
 
+  r2.cnpmjs.org/charenc@0.0.2:
+    resolution: {integrity: sha512-yrLQ/yVUFXkzg7EDQsPieE/53+0RlaWTs+wBrvW36cyilJ2SaDWfl4Yj7MtLTXleV9uEKefbAGUPv2/iWSooRA==, registry: http://r.cnpmjs.org/, tarball: https://r2.cnpmjs.org/charenc/-/charenc-0.0.2.tgz}
+    name: charenc
+    version: 0.0.2
+    dev: false
+
   r2.cnpmjs.org/chownr@1.1.4:
     resolution: {integrity: sha512-jJ0bqzaylmJtVnNgzTeSOs8DPavpbYgEr/b0YL8/2GO3xJEhInFmhKMUnEJQjZumK7KXGFhUy89PrsJWlakBVg==, registry: http://r.cnpmjs.org/, tarball: https://r2.cnpmjs.org/chownr/-/chownr-1.1.4.tgz}
     name: chownr
@@ -6031,6 +6048,12 @@ packages:
       path-key: r2.cnpmjs.org/path-key@3.1.1
       shebang-command: r2.cnpmjs.org/shebang-command@2.0.0
       which: r2.cnpmjs.org/which@2.0.2
+
+  r2.cnpmjs.org/crypt@0.0.2:
+    resolution: {integrity: sha512-mCxBlsHFYh9C+HVpiEacem8FEBnMXgU9gy4zmNC+SXAZNB/1idgp/aulFJ4FgCi7GPEVbfyng092GqL2k2rmow==, registry: http://r.cnpmjs.org/, tarball: https://r2.cnpmjs.org/crypt/-/crypt-0.0.2.tgz}
+    name: crypt
+    version: 0.0.2
+    dev: false
 
   r2.cnpmjs.org/crypto-random-string@4.0.0:
     resolution: {integrity: sha512-x8dy3RnvYdlUcPOjkEHqozhiwzKNSq7GcPuXFbnyMOCHxX8V3OgIg/pYuabl2sbUPfIJaeAQB7PMOK8DFIdoRA==, registry: http://r.cnpmjs.org/, tarball: https://r2.cnpmjs.org/crypto-random-string/-/crypto-random-string-4.0.0.tgz}
@@ -6770,6 +6793,12 @@ packages:
       call-bind: r2.cnpmjs.org/call-bind@1.0.2
       has-tostringtag: r2.cnpmjs.org/has-tostringtag@1.0.0
     dev: true
+
+  r2.cnpmjs.org/is-buffer@1.1.6:
+    resolution: {integrity: sha512-NcdALwpXkTm5Zvvbk7owOUSvVvBKDgKP5/ewfXEznmQFfs4ZRmanOeKBTjRVjka3QFoN6XJ+9F3USqfHqTaU5w==, registry: http://r.cnpmjs.org/, tarball: https://r2.cnpmjs.org/is-buffer/-/is-buffer-1.1.6.tgz}
+    name: is-buffer
+    version: 1.1.6
+    dev: false
 
   r2.cnpmjs.org/is-date-object@1.0.5:
     resolution: {integrity: sha512-9YQaSxsAiSwcvS33MBk3wTCVnWK+HhF8VZR2jRxehM16QcVOdHqPn4VPHmRK4lSr38n9JriurInLcP90xsYNfQ==, registry: http://r.cnpmjs.org/, tarball: https://r2.cnpmjs.org/is-date-object/-/is-date-object-1.0.5.tgz}
