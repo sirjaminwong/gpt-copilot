@@ -1,5 +1,6 @@
 import { useKeyPress } from "ahooks"
-import styleText from "data-text:./popover.module.less"
+import contentStyleText from "data-text:./popover.module.less"
+import globalStyleText from "data-text:~/assets/style.scss"
 import { useCallback, useEffect, useRef, useState } from "react"
 
 import useTextSelection from "~hooks/useTextSelection"
@@ -75,6 +76,6 @@ export const config = {
 }
 
 export const appendStyle = (style: HTMLStyleElement) => () => {
-  style.textContent = style.textContent + styleText
+  style.textContent = globalStyleText + contentStyleText + style.textContent
   return style
 }

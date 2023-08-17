@@ -9,12 +9,7 @@ import type { WordBaseInfo } from "~types/translate"
 
 import * as style from "../../popover.module.less"
 import { useClickAwayV2 } from "../../use-click-away"
-import {
-  StyledContent,
-  StyledHeader,
-  StyledHeaderLeft,
-  StyledStarOutlined
-} from "./styled"
+import { StyledContent, StyledStarOutlined } from "./styled"
 
 const phoneticConfig = [
   { type: "uk", lang: "en-GB" },
@@ -110,17 +105,16 @@ export const WordSummary = ({ word, position, onClose }: WordSummaryProps) => {
       style={{
         ...position
       }}>
-      <StyledHeader>
-        <StyledHeaderLeft>
-          <div>{word}</div>
-        </StyledHeaderLeft>
+      <div className="flex justify-between items-center bg-indigo-500 p-2">
+        <div className="text-lg text-gray-100">{word}</div>
         <div>
           <StyledStarOutlined
+            className="cursor-pointer"
             isFavorite={word && favorites.includes(word)}
             onClick={handleToggleFavorites}
           />
         </div>
-      </StyledHeader>
+      </div>
       {renderContent()}
     </div>
   )
