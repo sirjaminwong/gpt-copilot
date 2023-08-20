@@ -1,4 +1,4 @@
-import { CaretRightOutlined } from "@ant-design/icons"
+import { Icon } from "@iconify/react"
 import React from "react"
 
 import { CloseButton, StyledContainer, StyledDrawer } from "./style"
@@ -14,7 +14,7 @@ const SideDrawer = (props: Props) => {
   return (
     <StyledDrawer $zIndex={1000} $top={props.top} placement={props.placement}>
       <CloseButton placement={props.placement} onClick={props.onClose}>
-        <CaretRightOutlined style={{ color: "#fff", height: "24px" }} />
+        <Icon icon="ant-design:caret-right-filled" />
       </CloseButton>
       <StyledContainer placement={props.placement}></StyledContainer>
     </StyledDrawer>

@@ -1,6 +1,6 @@
 import { useKeyPress } from "ahooks"
 import contentStyleText from "data-text:./popover.module.less"
-import globalStyleText from "data-text:~/assets/style.scss"
+import globalStyleText from "data-text:~/assets/style.less"
 import { useCallback, useEffect, useRef, useState } from "react"
 
 import useTextSelection from "~hooks/useTextSelection"

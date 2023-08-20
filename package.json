@@ -12,7 +12,6 @@
     "lint": "eslint . '.js,.cjs,.jsx,.ts,.tsx"
   },
   "dependencies": {
-    "@ant-design/icons": "5.0.0",
     "@emotion/cache": "^11.11.0",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
@@ -21,6 +20,7 @@
     "ahooks": "^3.7.8",
     "antd": "^5.8.3",
     "axios": "^1.4.0",
+    "classnames": "^2.3.2",
     "hook": "link:@plasmohq/storage/hook",
     "md5": "^2.3.0",
     "openai": "^3.3.0",
@@ -29,6 +29,7 @@
     "react-dom": "18.2.0"
   },
   "devDependencies": {
+    "@iconify/react": "^4.1.1",
     "@plasmohq/prettier-plugin-sort-imports": "3.6.4",
     "@types/chrome": "0.0.227",
     "@types/node": "18.15.11",
