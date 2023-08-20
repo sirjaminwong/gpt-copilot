@@ -1,20 +1,25 @@
-import { createFromIconfontCN } from "@ant-design/icons"
+import { useEffect } from "react"
 
 import { useStorage } from "@plasmohq/storage/hook"
 
-const IconFont = createFromIconfontCN({
-  scriptUrl: "https://at.alicdn.com/t/font_8d5l8fzk5b87iudi.js"
-})
+import { api } from "~serivices/api"
 
 function TabManage() {
   const [favorites] = useStorage<string[]>("favorites", [])
 
+  useEffect(() => {
+    const hhh = async () => {
+      console.log("---------")
+      const users = await api.word.hello.query({ text: "from tRPC" })
+      console.log(users, "hello")
+    }
+    hhh()
+  }, [])
+
   return (
     <div>
+      wrwqetq
       {JSON.stringify(favorites)}
-      <IconFont type="icon-tuichu" />
-      <IconFont type="icon-facebook" />
-      <IconFont type="icon-twitter" />
     </div>
   )
 }

@@ -1,5 +1,6 @@
-import { PhoneOutlined } from "@ant-design/icons"
+import { Icon } from "@iconify/react"
 import { useRequest } from "ahooks"
+import classNames from "classnames"
 import React, { useCallback, useRef } from "react"
 
 import { sendToBackground } from "@plasmohq/messaging"
@@ -9,12 +10,7 @@ import type { WordBaseInfo } from "~types/translate"
 
 import * as style from "../../popover.module.less"
 import { useClickAwayV2 } from "../../use-click-away"
-import {
-  StyledContent,
-  StyledHeader,
-  StyledHeaderLeft,
-  StyledStarOutlined
-} from "./styled"
+import { StyledContent } from "./styled"
 
 const phoneticConfig = [
   { type: "uk", lang: "en-GB" },
@@ -68,9 +64,13 @@ export const WordSummary = ({ word, position, onClose }: WordSummaryProps) => {
       <StyledContent>
         <div style={{ display: "flex", gap: "20px" }}>
           {phoneticConfig.map((i) => (
-            <div key={i.type}>
+            <div className="flex items-center" key={i.type}>
+              <Icon
+                className="mr-1 cursor-pointer"
+                icon="akar-icons:sound-on"
+                onClick={() => handleSpeech(word, i.lang)}
+              />
               {phoneticConfig.length > 1 && i.type}/{data.phonetic[i.type]}/
-              <PhoneOutlined onClick={() => handleSpeech(word, i.lang)} />
             </div>
           ))}
         </div>
@@ -91,8 +91,12 @@ export const WordSummary = ({ word, position, onClose }: WordSummaryProps) => {
         <div>
           {data.exampleSentences.map((i) => (
             <div key={i.sentence}>
-              <div>
-                <PhoneOutlined onClick={() => handleSpeech(i.sentence)} />
+              <div className="flex items-baseline">
+                <Icon
+                  className="mr-1 cursor-pointer"
+                  icon="akar-icons:sound-on"
+                  onClick={() => handleSpeech(i.sentence)}
+                />
                 {i.sentence}
               </div>
               <div>{i.translation}</div>
@@ -103,6 +107,8 @@ export const WordSummary = ({ word, position, onClose }: WordSummaryProps) => {
     )
   }
 
+  const isFavorite = favorites.includes(word)
+
   return (
     <div
       ref={containerRef}
@@ -110,17 +116,21 @@ export const WordSummary = ({ word, position, onClose }: WordSummaryProps) => {
       style={{
         ...position
       }}>
-      <StyledHeader>
-        <StyledHeaderLeft>
-          <div>{word}</div>
-        </StyledHeaderLeft>
+      <div className="flex justify-between items-center bg-indigo-500 p-2">
+        <div className="text-lg text-gray-100">{word}</div>
         <div>
-          <StyledStarOutlined
-            isFavorite={word && favorites.includes(word)}
+          <Icon
+            className={`cursor-pointer text-lg ${classNames({
+              "text-amber-500": isFavorite,
+              "text-gray-100": !isFavorite
+            })}`}
             onClick={handleToggleFavorites}
+            icon={
+              isFavorite ? "ant-design:star-filled" : "ant-design:star-outlined"
+            }
           />
         </div>
-      </StyledHeader>
+      </div>
       {renderContent()}
     </div>
   )
