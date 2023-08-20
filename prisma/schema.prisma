@@ -1,0 +1,101 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["jsonProtocol"]
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+// 用户信息表
+model User {
+  id               String    @id @default(auto()) @map("_id") @db.ObjectId
+  username         String    @unique // 用户名
+  password         String // 密码
+  email            String    @unique // 电子邮件
+  registrationDate DateTime  @default(now()) // 注册日期
+  lastLoginDate    DateTime? // 最后登录日期
+  // 其他用户相关信息（如姓名、性别、年龄等）
+  name             String?
+  gender           String?
+  age              Int?
+}
+
+model Tag {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  courseIds String[] @db.ObjectId
+  courses   Course[] @relation(fields: [courseIds], references: [id])
+}
+
+// 课程表
+model Course {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  name            String // 课程名称
+  description     String // 课程描述
+  coverImage      String // 课程封面图片
+  difficultyLevel String // 课程难度级别
+  tagIds          String[] @db.ObjectId
+  tags            Tag[]    @relation(fields: [tagIds], references: [id])
+  lessons         Lesson[]
+}
+
+model Lesson {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId // 单元ID
+  content   String
+  title     String
+  videoLink String
+  quiz      String
+  courseId  String @db.ObjectId
+  course    Course @relation(fields: [courseId], references: [id]) // 单元所属课程
+}
+
+enum ChallengeType {
+  translate
+  selectTranscription
+  listenTap
+  tapComplete
+  dialogue
+  speak
+}
+
+type Choice {
+  text String
+  tts  String?
+}
+
+model Word {
+  id         String      @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt  DateTime    @default(now())
+  word       String
+  updatedAt  DateTime    @updatedAt
+}
+
+model Challenge {
+  id                 String               @id @default(auto()) @map("_id") @db.ObjectId
+  prompt             String
+  type               ChallengeType
+  correctAnswer      String[]
+  choices            Choice[]
+  translateChallenge TranslateChallenge?
+}
+
+model TranslateChallenge {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  challengeId String    @db.ObjectId @unique
+  name        String
+  score       Int
+  challenge   Challenge @relation(fields: [challengeId], references: [id])
+}
+
+model Progress {
+  id             String    @id @default(auto()) @map("_id") @db.ObjectId // 单元ID
+  learningStatus String
+  completionDate DateTime?
+  studyTime      String
+  userId         String    @db.ObjectId
+}
